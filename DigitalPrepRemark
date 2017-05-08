@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ASU Digital Prep</title>
+    <meta charset="utf-8">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# ASU Digital Prep
+
+---
+
+# Agenda
+
+1. Introduction
+2. Graphs
+3. Anything you Want
+4. Conclusion
+
+
+---
+
+# Introduction
+
+Anything you want can go here
+
+---
+
+# Scaling Florida Virtual High School
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+---
+
+# Graph 2
+
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
+
+
+<script>
+
+$(function () {
+    var data = [10050, 12761, 24160, 36679, 56130, 84043, 116035, 154125, 213926]; // original data
+    var data2 = []; // calculated series
+    var perDiff; // percent difference
+    for (var i = 0; i < data.length - 1; i++) {
+        // calculate the % diff, we're going to use this as the point name
+        perDiff = (data[i + 1] - data[i]) / data[i] * 100;
+        data2.push({
+            // this is assuming a category xAxis, if your original array has x & y values, you'll need to do a little more math
+            x: i + 0.5,
+            // find the half way mark
+            y: (data[i] + data[i + 1]) / 2,
+            // set the name, so we can use it in the dataLabel formatter
+            name: Math.round(perDiff) + "%"
+        });
+    }
+
+
+Highcharts.setOptions({
+    lang: {
+			thousandsSep: ','
+		},
+  colors: ['#28bdf2']
+});
+
+var chart = Highcharts.chart('container', {
+  chart: {
+      animation: {
+              duration: 1000
+          },
+
+  },
+  title: {
+    text: 'FLVS Completion History'
+  },
+  credits: {
+      enabled: false
+  },
+  subtitle: {
+    text: 'As of June 30, 2010'
+  },
+  xAxis: {
+    categories: [
+      'Year 1',
+      'Year 2',
+      'Year 3',
+      'Year 4',
+      'Year 5',
+      'Year 6',
+      'Year 7',
+      'Year 8',
+      'Year 9',
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '# of Completions'
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:,.0f} </b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    line: {
+        animation: {
+                duration: 1000
+            },
+            dataLabels: {
+              enabled: true
+          },
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: 'Completions',
+    data: [10050]
+    //10050, 12761, 24160, 36679, 56130, 84043, 116035, 154125, 213926
+  }]
+    });
+
+  var i = 1;
+   var newData = [10050, 12761, 24160, 36679, 56130, 84043, 116035, 154125, 213926];
+  $(document).keypress(function(event) {
+      var keycode = event.keyCode || event.which;
+      if(keycode == '13') {
+          console.log("Workks");
+        //   chart.title.update({ text: 'New title '});
+        chart.series[0].addPoint(12761);
+        setTimeout(function(){ chart.series[0].addPoint(24160); }, 1000);
+        setTimeout(function(){ chart.series[0].addPoint(36679); }, 2000);
+        setTimeout(function(){ chart.series[0].addPoint(56130); }, 3000);
+        setTimeout(function(){ chart.series[0].addPoint(84043); }, 4000);
+        setTimeout(function(){ chart.series[0].addPoint(116035); }, 5000);
+        setTimeout(function(){ chart.series[0].addPoint(154125); }, 6000);
+        setTimeout(function(){ chart.series[0].addPoint(213926); }, 7000);
+            setTimeout(function(){
+                chart.addSeries({
+            name: 'Percent Difference',
+            data: data2,
+            type: 'scatter',
+            color: 'grey',
+            dataLabels: {
+                enabled: true,
+                color: 'grey',
+                formatter: function () {
+                    return this.point.name;
+                }
+            }
+            });
+
+
+
+         }, 10000);
+
+
+setTimeout(function(){ chart.title.update({ text: 'FLVS Growth Compared To ASU Online '}); }, 13000);
+
+         setTimeout(function(){
+             chart.addSeries({
+         name: 'ASU Online',
+         data: [1005, 1276, 2416, 3667, 5613, 8403, 11605, 15415, 21396],
+         type: 'line',
+         color: 'gold',
+         animation: {
+                 duration: 5000
+             },
+         dataLabels: {
+             enabled: true,
+             color: 'gold',
+             formatter: function () {
+                 return this.point.name;
+             }
+         }
+         });
+
+
+
+     }, 15000);
+
+        // setInterval(function() {
+        //                             chart.redraw();
+        //                         }, 5000);
+
+
+        // chart.series[0].setData(newData);
+        // chart.series[0].update({
+        //     animation: {
+        //             duration: 2000
+        //         }
+        // });
+      }
+});
+});
+// var i = 1;
+//    $('#update').click(function () {
+//        var chart = $('#container').highcharts();
+//        console.log("Workks");
+//        chart.title.update({ text: 'New title '});
+    //    chart.series[0].update({name:'new title'});
+    //    chart.series[0].setData(newData);
+    //    chart.addSeries({data: [40, 20.5, 22.4, 17.2, 124.0, 276.0, 135.6, 108.5, 116.4, 124.1, 29.6, 154.4]});
+            // chart.series[0].update({name:'Mark'});
+
+
+
+</script>
+
+
+
+
+<script>$('#container').addClass('animated zoomInDown');
+</script>
+
+
+
+<script>
+Highcharts.setOptions({
+    colors: ['#28bdf2']
+});
+
+Highcharts.chart('container2', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: 'Florida Virtual School FTE Completions'
+  },
+  subtitle: {
+    text: ''
+  },
+  xAxis: {
+    categories: [
+      '2000-01',
+      '2001-02',
+      '2002-03',
+      '2003-04'
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    max: 2500,
+    title: {
+      text: '# of Completions'
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:f} </b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+        animation: {
+                duration: 2000
+            },
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: 'FTE Completions',
+    data: [600, 800, 1100, 2400]
+
+  }]
+});
+</script>
